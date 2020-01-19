@@ -1,0 +1,325 @@
+https://www.cnblogs.com/hahaccy/p/8059585.html
+Unit Test & JUnit(Java)
+unit tests def
+
+　　High-level testing vs. low-level testing: High-level: system function testing, acceptance testing, … Low-level: unit testing and integration testing Components must be tested in isolation A functional test can tell you that a bug exists in the implementation A unit test tells you where the bug is located Part of the construction activities
+
+　　　　　　　　
+
+How to create a unit test?
+
+　　public class Calculator{
+
+　　　　public double add(double number1, double number2) {
+
+　　　　　　double sum=number1 + number2;
+
+　　　　　　return sum;
+
+　　　　　　}
+
+　　　　}
+
+Solution1: write a simple test
+
+　　public class TestCalculator{
+
+　　　　public static void main( String[ ] args ) {
+
+　　　　　　Calculator calculator = new DefaultCalculator();
+
+　　　　　　int result = calculator.add( 8.0, 7,0 );
+
+　　　　　　if ( result != 15.0) {
+
+　　　　　　　　System.out.println( “Bad result: ” + result );
+
+　　　　　　}
+
+　　　　}
+
+　　}
+
+　　Requires you to monitor the screen for error messages
+
+　　Inflexible when more tests are needed
+
+复制代码
+ 1 public class TestCalculator{
+ 2 private int nbErrors = 0;
+ 3 public void testAdd(){
+ 4 　　Calculator calculator = new Calculator();
+ 5 　　double result = calculator.add(8.0, 7.0);
+ 6 if (result != 15.0){
+ 7     throw new RuntimeException("Bad result: " + result);
+ 8 }
+ 9 }
+10
+11 public static void main(String[ ] args) {
+12 TestCalculator test = new TestCalculator();
+13 try {
+14     test.testAdd();
+15 }
+16 catch (Throwable e) {
+17     test.nbErrors++;
+18     e.printStackTrace();
+19 }
+20 if (test.nbErrors > 0) {
+21     throw new RuntimeException("There were " +     test.nbErrors+ " error(s)");
+22 }
+23 }
+24 }
+复制代码
+
+
+　　The preferred solution:
+
+　　　　to have a unit testing framework
+
+　　　　A unit is the smallest testable component in an application.
+
+　　　　In most cases a unit is a method
+
+　　　　A unit does not depend on other components which are not unit tested themselves
+
+　　　　Programmers can mainly focus on the development of test cases
+
+
+
+Test case verdicts
+
+
+
+　　A verdict is the declared result of executing a single test.
+
+　　Pass: the test case achieved its intended purpose, and the software under test performed as expected.
+
+　　Fail: the test case achieved its intended purpose, but the software under test did not perform as expected（跟预期的不同）
+
+　　Error: the test case did not achieve its intended purpose（比Fail更严重，没有达到需要的要求）
+
+　　Potential reasons: An unexpected event occurred during the test case. The test case could not be set up properly
+
+
+
+JUnit framework
+
+
+
+　　Unit helps the programmer:
+
+　　-define and execute tests and test suites
+
+　　-formalize requirements and clarify architecture
+
+　　-write and debug code
+
+　　-integrate code and always be ready to release a working version
+
+
+
+　　import org.junit.Test;
+
+　　import static org.junit.Assert.assertEquals;
+
+　　public class TestCalculator {
+
+　　@Test
+
+　　public void testAdd() {
+
+　　　　Calculator calculator = new Calculator();
+
+　　　　double result = calculator.add(10, 50);
+
+　　　　assertEquals(60, result, 0);
+
+　　　　}
+
+　　}
+
+
+
+
+
+What is the general idea of creating a test “script”?
+
+　　Create a collection of Java methods, i.e., test cases. In each test case, create a few Java objects of the tested classes
+
+　　Do something interesting with them, and then determine if the objects have the correct properties.
+
+How to determine?
+
+　　A package of methods that checks for various properties:
+
+　　“equality” of objects
+
+　　identical object references
+
+　　null / non-null object references
+
+　　The assertions are used to determine the test case verdict.
+
+A JUnit Test Case
+
+/** Test of setName()& getName() method, of class Value */
+
+@Test  //Identifies this Java method as a test case, for the test runner
+
+public void createAndSetNameTest() {
+
+　　Value v1 = new Value( );
+
+　　v1.setName( "Y" );  //Objective: confirm that setName saves the specified name in the Value object
+
+　　String expected = "Y";
+
+　　String actual = v1.getName( );    //Check to see that the Value object really did store the name
+
+　　Assert.assertEquals( expected, actual );  // We want expected and actual to be equal. If they aren’t, then the test case should fail.
+
+　　}
+
+Assertions are defined in the JUnit class Assert
+
+　　If an assertion is true, the method continues executing.
+
+　　If any assertion is false, the method stops executing at that point, and the result for the test case will be fail.
+
+　　If any other exception is thrown during the method, the result for the test case will be error.
+
+　　If no assertions were violated for the entire method, the test case will pass.
+
+Boolean conditions are true or false
+
+　　assertTrue(condition)
+
+　　assertFalse(condition)
+
+Objects are null or non-null
+
+　　assertNull(object)
+
+　　assertNotNull(object)
+
+Objects are identical (i.e. two references to the same object), or not identical.
+
+　　assertSame(expected, actual)
+
+　　Valid if: expected == actual
+
+　　assertNotSame(expected, actual)
+
+　　Valid if: expected != actual
+
+
+
+　　“Equality” of objects:
+
+　　　　assertEquals(expected, actual)
+
+　　　　valid if: expected.equals( actual )
+
+　　　　There is also an unconditional failure assertion fail() that always results in a fail verdict.
+
+Assertion method parameters
+
+　　In any assertion method with two parameters, the first parameter is the expected value, and the second parameter should be the actual value. (This does not affect the comparison, but this ordering is assumed for creating the failure message to the user. )
+
+　　Example:assertEquals(“ABC”, hello.getString());
+
+　　Any assertion method can have an additional String parameter as the first parameter. The string will be included in the failure message if the assertion fails.
+
+　　Examples: fail( “the message I want to say” );
+
+　　assertEquals( “message”, “ABC”, hello.getString());
+
+Equality assertions
+
+　　assertEquals(a,b):
+
+　　The effect is to evaluate a.equals( b ).
+
+　　If a and b are of a primitive type such as int, boolean, etc., then the following is done for
+
+　　assertEquals(a,b):
+
+　　a and b are converted to their equivalent object type (Integer, Boolean, etc.), then a.equals( b ) is evaluated.
+
+Floating point assertions
+
+　　When comparing floating point types (double or float), there is an additional required parameter delta to avoid problems with round-off errors with floating point comparisons..
+
+　　The assertion evaluates
+
+　　　　Math.abs(expected–actual ) ± delta or |expected–actual| ± delta
+
+　　assertEquals(message, aDouble, anotherDouble, delta)
+
+　　Example: assertEquals(“test 1”,6.27, 6.25, 0.03)
+
+　　　　　　assertEquals(“test 2”, 6.27, 6.25, 0.01)
+
+Test fixtures
+
+　　A test fixture is the context in which a test case runs.
+
+　　Typically, test fixtures include:
+
+　　Objects or resources that are available for use by any test case.
+
+　　Activities required to make these objects available and/or resource allocation and de-allocation: “setup” and “teardown”.
+
+
+
+Setup and Teardown
+
+　　Setup: Use the @Before annotation on a method containing code to run before each test case.
+
+　　Teardown : Use the @After annotation on a method containing code to run after each test case. These methods will run even if exceptions are thrown in the test case or an assertion fails.
+
+　　 It is allowed to have any number of these annotations. All methods annotated with @Before will be run before each test case, but they may be run in any order.
+
+
+
+
+
+
+
+public class OutputTest {
+
+　　private File output;
+
+　　@Before
+
+　　public void createOutputFile() {
+
+　　　　output = new File(...);
+
+　　　　}
+
+　　@After
+
+　　public void deleteOutputFile() {
+
+　　　　 output.delete();
+
+　　}
+
+　　@Test
+
+　　public void test1WithFile() {
+
+　　　　// code for test case objective
+
+　　}
+
+　　@Test
+
+　　public void test2WithFile() {
+
+　　　　// code for test case objective
+
+　　　　}
+
+　　}

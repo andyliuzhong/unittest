@@ -1,0 +1,11 @@
+server:
+  port: 8989
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=andy
+    username: sa
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
