@@ -180,3 +180,13 @@ if "%MAVEN_BATCH_PAUSE%" == "on" pause
 if "%MAVEN_TERMINATE_CMD%" == "on" exit %ERROR_CODE%
 
 exit /B %ERROR_CODE%
+
+vcap:https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/cloud/CloudFoundryVcapEnvironmentPostProcessor.html
+
+https://stackoverflow.com/questions/42081731/cloud-foundry-bind-services-cups-datasource-number-of-connections/42285115#42285115
+
+
+Hi Scott,
+Have a nice day!  Sorry to interrupt you  by this way, But I have a emergency  issue with Spring Cloud Connectors,and  hope you can give some help.
+Details: https://stackoverflow.com/questions/62022430/cannot-set-connectionproperties-with-spring-cloud-connectors-in-pcf-with-sqlserv.
+thanks a lot.
